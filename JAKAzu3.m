@@ -37,7 +37,7 @@ classdef JAKAzu3 < RobotBaseClass
             % Joint offsets
                 link(2).offset = -90*pi/180;
     
-    self.model = SerialLink(link, 'name', self.name);
+                self.model = SerialLink(link, 'name', self.name);
         end
     end
 end
