@@ -1,0 +1,8 @@
+clear all;
+close all;
+clc;
+
+robot = JAKAZU3;
+robot.model.base(transl([0.3,0,0]))
+UR = UR3;
+UR.model.base(transl([-0.3 0 0]))
