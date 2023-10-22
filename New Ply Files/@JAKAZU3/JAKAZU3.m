@@ -10,7 +10,6 @@ classdef JAKAZU3 < RobotBaseClass
                 if nargin == 2
                     error('If you set useTool you must pass in the toolFilename as well');
                 elseif nargin == 0 % Nothing passed
-                    
                     baseTr = transl(0,0,0);  
                 end             
             else % All passed in 
@@ -23,7 +22,7 @@ classdef JAKAZU3 < RobotBaseClass
             self.CreateModel();
 			self.model.base = self.model.base.T * baseTr;
             self.model.tool = self.toolTr;
-            
+            self.CreateModel();
             self.PlotAndColourRobot(); % model from: https://www.jakarobotics.com/mp-files/zu3-step.zip/, https://www.jakarobotics.com/resources/download/technical-information/
             
         end
