@@ -4,7 +4,7 @@ classdef Environment < handle
     end
     methods
         function self = Environment(self)
-             hold on 
+            hold on 
             % Personalised .ply files I have placed down, 
             % I can place as many as needed, can use trot(xyz) to rotate
             % Need to work on scaling the Beer Taps
