@@ -1,6 +1,6 @@
 classdef JAKAZU3 < RobotBaseClass
     properties
-        plyFileNameStem = 'JakaZu3';
+        plyFileNameStem = 'JAKAZU3';
     end
 
     methods
@@ -11,7 +11,7 @@ classdef JAKAZU3 < RobotBaseClass
                     error('If you set useTool you must pass in the toolFilename as well');
                 elseif nargin == 0 % Nothing passed
                     
-                    baseTr = transl(0,0,0);  
+                    baseTr = transl(-0.4,0,0);  
                 end             
             else % All passed in 
                 self.useTool = useTool;
@@ -21,6 +21,7 @@ classdef JAKAZU3 < RobotBaseClass
             end
           
             self.CreateModel();
+            self.homeQ = [1.5708 0 0 0 0 0]; %Set up position
 			self.model.base = self.model.base.T * baseTr;
             self.model.tool = self.toolTr;
             
@@ -36,7 +37,7 @@ classdef JAKAZU3 < RobotBaseClass
             L(4) = Link('d',0.1175,'a',0.0,'alpha',pi/2,'qlim',[deg2rad(-85) deg2rad(265)],'offset', 0);
             L(5) = Link('d',0.1175,'a',0,'alpha',-pi/2,'qlim',[deg2rad(-270) deg2rad(270)], 'offset',0);
             L(6) = Link('d',0.1050,'a',0,'alpha',0,'qlim',[deg2rad(-270) deg2rad(270)], 'offset', 0);
-            self.model = SerialLink(L,'name', 'ZU3');
+            self.model = SerialLink(L,'name', 'JAKAZU3');
         end
     end
 end

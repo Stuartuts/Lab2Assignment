@@ -1,1 +1,0 @@
-The concept for this gripper hand is inspired by the RG2 Gripper, which can be found at the following link: https://www.universal-robots.com/plus/products/onrobot/rg2-gripper/?fbclid=IwAR3bFb5DGSqaaiM9OWo0a4_6emjei152T7W_BxvjJC0szJmXxnUxm4S7TUM
