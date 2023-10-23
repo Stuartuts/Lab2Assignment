@@ -93,9 +93,13 @@ classdef GUI < handle
         function ModelSetup(self,fig)
             
             Plot = uiaxes(fig,'Position',[370 255 620 460]);
-            self.ZU3 = JAKAZU3(transl([0.4 0 0]));
             hold on;
-            self.URobot3 = UR3(transl([-0.4 0 0]));
+            surf([-3,-3;3,3],[-3,3;-3,3] ,[0.01,0.01;0.01,0.01],'CData',imread('concrete.jpg'),'FaceColor','texturemap')
+            PlaceObject('Bar.ply',[0 0 0.1])
+            PlaceObject('Holder.ply',[0 0.75 0.0])
+            self.ZU3 = JAKAZU3(transl(0.4,0,1.1) * trotz(-90,"deg"));
+            self.ZU3.workspace = [-4 4 -4 4 0 5];
+            self.URobot3 = UR3(transl(-0.4,0,1.1));
             
             
             
