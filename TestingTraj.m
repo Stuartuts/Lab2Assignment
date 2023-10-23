@@ -10,7 +10,7 @@ classdef TestingTraj < handle
 
             close all;
             warning off;
-            axis([-2 2 -2 2 -2 2])
+            axis([-2 2 -2 2 0 4])
             hold on
             self.Arm{1} = UR3;
             % self.Arm{2} = JAKAZU3;
@@ -27,12 +27,13 @@ classdef TestingTraj < handle
             % self.LeftHand{2} = GripperHand(self.GripperBase{2}.model.base.T*transl(0,0.015,-0.06)*troty(pi/2));
             % self.RightHand{2} = GripperHand(self.GripperBase{2}.model.base.T*trotz(pi)*transl(0,0.015,-0.06)*troty(pi/2));
            
-            self.botshaker = PlaceObject('BotShaker.ply');
+            self.botshaker = PlaceObject('BotShaker.ply',[0.5,0.6,0]);
             self.botshaker_vert = get(self.botshaker,'Vertices');
-            self.botshaker_tr = [self.botshaker_vert,ones(size(self.botshaker_vert,1),1)]*transl(0.5,0.6,0)';
-            set(self.botshaker_vert,'Vertices',self.botshaker_tr(:,1:3));
+            self.botshaker_tr = [self.botshaker_vert,ones(size(self.botshaker_vert,1),1)];
+            % set(self.botshaker_vert,'Vertices',self.botshaker_tr(:,1:3));
+            % % Check this one, i could not get the vertices from this.
 
-            Target1 = {[0.5,0.6,0.2],[0,0,0.2]} ; %Bottle
+            Target1 = {[0.5,0.45,0.08],[0,0,0.2]} ; %Bottle
             % Target2 = [-0.5,0.6,0.2],[0,0,0.2]}; %Bottle
 
             for index = 1:2
