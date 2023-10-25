@@ -10,10 +10,10 @@ classdef TestingTraj < handle
 
             close all;
             warning off;
-            axis([-2 2 -2 2 0 4])
+            axis([-2 2 -2 2 0 2])
             hold on
             self.Arm{1} = UR3;
-            self.Arm{2} = JAKAZU3;
+            % self.Arm{2} = JAKAZU3;
             self.Arm{2} = UR3(transl(-0.4,0,0));
             
 
@@ -27,11 +27,11 @@ classdef TestingTraj < handle
             self.LeftHand{2} = GripperHand(self.GripperBase{2}.model.base.T*transl(0,0.015,-0.06)*troty(pi/2));
             self.RightHand{2} = GripperHand(self.GripperBase{2}.model.base.T*trotz(pi)*transl(0,0.015,-0.06)*troty(pi/2));
            
-            self.botshaker = PlaceObject('BotShaker.ply',[0.5,0.6,0]);
-            self.botshaker_vert = get(self.botshaker,'Vertices')
-            self.botshaker_tr = [self.botshaker_vert,ones(size(self.botshaker_vert,1),1)]
-            %set(self.botshaker_vert,'Vertices',self.botshaker_tr(:,1:3));
-            % % Check this one, i could not get the vertices from this.
+            % self.botshaker = PlaceObject('BotShaker.ply',[0.5,0.6,0]);
+            % self.botshaker_vert = get(self.botshaker,'Vertices')
+            % self.botshaker_tr = [self.botshaker_vert,ones(size(self.botshaker_vert,1),1)]
+            % %set(self.botshaker_vert,'Vertices',self.botshaker_tr(:,1:3));
+            % % % Check this one, i could not get the vertices from this.
 
             Target1 = {[0.5,0.45,0.08],[0,0,0.2]} ; %Bottle
             Target2 = {[-0.5,0.6,0.2],[0,0,0.2]}; %Bottle
@@ -46,16 +46,16 @@ classdef TestingTraj < handle
 
                 for i = 1:200
 
-                    %Base1 = self.Arm{1}.model.fkine(self.Arm{1}.model.getpos).T*transl(0,0,-0.01)*troty(pi);
-                    %self.GripperBase{1}.model.base = Base1
-                    %self.LeftHand{1}.model.base = self.GripperBase{1}.model.base.T*transl(0,0.015,-0.06)*troty(pi/2);
-                    %self.RightHand{1}.model.base = self.GripperBase{1}.model.base.T*trotz(pi)*transl(0,0.015,-0.06)*troty(pi/2);
+                    Base1 = self.Arm{1}.model.fkine(self.Arm{1}.model.getpos).T*transl(0,0,-0.01)*troty(pi);
+                    self.GripperBase{1}.model.base = Base1
+                    self.LeftHand{1}.model.base = self.GripperBase{1}.model.base.T*transl(0,0.015,-0.06)*troty(pi/2);
+                    self.RightHand{1}.model.base = self.GripperBase{1}.model.base.T*trotz(pi)*transl(0,0.015,-0.06)*troty(pi/2);
 
-                   % self.Arm{1}.model.animate(qMatrix(i,:));
-                   % self.GripperBase{1}.model.animate(0);
-                    %self.LeftHand{1}.model.animate(self.LeftHand{1}.model.getpos());
-                    %self.RightHand{1}.model.animate(self.RightHand{1}.model.getpos());
-                    %drawnow
+                   self.Arm{1}.model.animate(qMatrix(i,:));
+                   self.GripperBase{1}.model.animate(0);
+                    self.LeftHand{1}.model.animate(self.LeftHand{1}.model.getpos());
+                    self.RightHand{1}.model.animate(self.RightHand{1}.model.getpos());
+                    drawnow
                 end
                 self.signal = index;
                 %self.GripperControl()
