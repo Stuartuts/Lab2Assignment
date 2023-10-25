@@ -21,7 +21,7 @@ classdef JAKAZU3 < RobotBaseClass
             end
           
             self.CreateModel();
-            self.homeQ = [1.5708 0 0 0 0 0]; %Set up position
+            
 			self.model.base = self.model.base.T * baseTr;
             self.model.tool = self.toolTr;
             

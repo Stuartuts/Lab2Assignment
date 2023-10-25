@@ -2,7 +2,9 @@ classdef GUI < handle
     properties
         estopPhoto = imread("Estop1.jpg");
         ZU3;
-        URobot3;
+        ZU3Arm; %Arm 1 = base %Arm 2 = left arm %arm 3 = right arm
+        UR3;
+        UR3Arm; %Arm 1 = base %Arm 2 = left arm %arm 3 = right arm
         tab1;
         tab2;
         ZU3Joints;
@@ -33,14 +35,14 @@ classdef GUI < handle
         function GuiSetup(self,fig)
             i = 15/730;
             x = 700/730;
-            tabGroup = uitabgroup(fig,'Position',[0.01, i , 0.35,x],'Units','pixels')
+            tabGroup = uitabgroup(fig,'Position',[0.01, i , 0.35,x],'Units','normalized')
             
             
             self.tab1 = uitab(tabGroup, 'Title', 'UR3');
             self.tab2 = uitab(tabGroup, 'Title', 'JAKA ZU3');
             
             self.ZU3Joints = self.ZU3.model.getpos();
-            self.UR3Joints = self.URobot3.model.getpos();
+            self.UR3Joints = self.UR3.model.getpos();
             self.SliderSetup();
             self.CartesianSetup();
             
@@ -56,8 +58,8 @@ classdef GUI < handle
                     'FontUnits','normalized','FontSize',0.5,'String',sprintf('q%d',i));
                 UR3slider(i) = uicontrol(self.tab1,"Style","slider","Units", ...
                     "normalized","Position",[0.15, topheight-0.1*(i-1), 0.65, 0.075], ...
-                    "Max",rad2deg(self.URobot3.model.qlim(i,2)), ...
-                    "Min",rad2deg(self.URobot3.model.qlim(i,1)), ...
+                    "Max",rad2deg(self.UR3.model.qlim(i,2)), ...
+                    "Min",rad2deg(self.UR3.model.qlim(i,1)), ...
                     'Value',self.UR3Joints(i),"Tag", sprintf('slider %d',i));
                 UR3edit(i) = uicontrol(self.tab1,"Style","edit","Units","normalized", ...
                     "Position",[0.8, topheight-0.1*(i-1), 0.15, 0.075],"HorizontalAlignment","left", ...
@@ -84,24 +86,29 @@ classdef GUI < handle
         function OtherButtonsSetup(self,fig)
             i = 15/730;
             x = 230/730;
-            Otherpanel = uipanel(fig,'Position',[0.37 i 0.62 x]);
-            estop = uicontrol(Otherpanel,'Style','togglebutton','CData',self.estopPhoto,'Position',[500 65 100 100],'Callback',@self.EstopPressed);
-            startMission = uicontrol(Otherpanel,'Style','pushbutton','Position',[30 100 100 30],'String','Start Mission','Callback',@(src,event)self.StartMission());
-            resumeMission = uicontrol(Otherpanel,'Style','pushbutton','Position',[150 100 100 30],'String','Resume','Callback',@(src,event)self.Resume());
+            Otherpanel = uipanel(fig,'Position',[0.37 i 0.62 x],'Units','normalized');
+            estop = uicontrol(Otherpanel,'Style','togglebutton','CData',self.estopPhoto,'Position',[450 40 150 150],'Callback',@self.EstopPressed,'Units','normalized');
+            startMission = uicontrol(Otherpanel,'Style','pushbutton','Position',[30 100 100 30],'String','Start Mission','Callback',@(src,event)self.StartMission(),'Units','normalized');
+            resumeMission = uicontrol(Otherpanel,'Style','pushbutton','Position',[150 100 100 30],'String','Resume','Callback',@(src,event)self.Resume(),'Units','normalized');
         end
 
         function ModelSetup(self,fig)
             
-            Plot = uiaxes(fig,'Position',[370 255 620 460]);
+            Plot = uiaxes(fig,'Position',[370 255 620 460],'Units','normalized');
             hold on;
             surf([-3,-3;3,3],[-3,3;-3,3] ,[0.01,0.01;0.01,0.01],'CData',imread('concrete.jpg'),'FaceColor','texturemap')
             PlaceObject('Bar.ply',[0 0 0.1])
             PlaceObject('Holder.ply',[0 0.75 0.0])
-            self.ZU3 = JAKAZU3(transl(0.4,0,1.1) * trotz(-90,"deg"));
+            self.ZU3 = JAKAZU3(transl(0.4,0,1.1));
             self.ZU3.workspace = [-4 4 -4 4 0 5];
-            self.URobot3 = UR3(transl(-0.4,0,1.1));
+            self.UR3 = UR3(transl(-0.4,0,1.1));
             
-            
+            self.UR3Arm{1} = GripperBase(self.UR3.model.fkine(self.UR3.model.getpos).T*transl(0,0,-0.01)*troty(pi));
+            self.UR3Arm{2} = GripperHand(self.UR3Arm{1}.model.base.T*transl(0,0.015,-0.06)*troty(pi/2));
+            self.UR3Arm{3} = GripperHand(self.UR3Arm{1}.model.base.T*trotz(pi)*transl(0,0.015,-0.06)*troty(pi/2));
+            self.ZU3Arm{1} = GripperBase(self.ZU3.model.fkine(self.ZU3.model.getpos).T*transl(0,0,-0.01)*troty(pi));
+            self.ZU3Arm{2} = GripperHand(self.ZU3Arm{1}.model.base.T*transl(0,0.015,-0.06)*troty(pi/2));
+            self.ZU3Arm{3} = GripperHand(self.ZU3Arm{1}.model.base.T*trotz(pi)*transl(0,0.015,-0.06)*troty(pi/2));
             
         end
 
@@ -110,12 +117,12 @@ classdef GUI < handle
             xx = 200/350
             y = 170/700
             yy = 20/700
-            UR3Box = uipanel(self.tab1,'Position',[0.1857 0.05 .6 .3]);
+            UR3Box = uipanel(self.tab1,'Position',[0.1857 0.05 .6 .3],'Units','normalized');
             texts(1) = 'x';
             texts(2) = 'y';
             texts(3) = 'z';
             
-            UR3Text = uicontrol(UR3Box,'Position',[30 170 150 20],'Style','text','String','Cartesian Movement','FontSize',10,'FontWeight','bold');
+            UR3Text = uicontrol(UR3Box,'Position',[30 170 150 20],'Style','text','String','Cartesian Movement','FontSize',10,'FontWeight','bold','Units','normalized');
             for i = 1:3
                 uicontrol(UR3Box,'Style','text','Units','normalized', ...
                     'Position',[0.2,0.6-0.2*(i-1), 0.1, 0.25], ...
@@ -129,7 +136,7 @@ classdef GUI < handle
             set(SubmitButtonUR3, 'Units', 'normalized');
             
             ZU3Box = uipanel(self.tab2,'Position',[0.1857 0.05 .6 .3]);
-            ZU3Text = uicontrol(ZU3Box,'Position',[30 170 150 20],'Style','text','String','Cartesian Movement','FontSize',10,'FontWeight','bold');
+            ZU3Text = uicontrol(ZU3Box,'Position',[30 170 150 20],'Style','text','String','Cartesian Movement','FontSize',10,'FontWeight','bold','Units','normalized');
             for i = 1:3
                 uicontrol(ZU3Box,'Style','text','Units','normalized', ...
                     'Position',[0.2,0.6-0.2*(i-1), 0.1, 0.25], ...
@@ -151,7 +158,6 @@ classdef GUI < handle
         end
 
         function ZU3cartesianMovement(self,src)
-            
             val = get(src,'UserData');
             newval = get(src,'String');
             newval = str2double(newval);
@@ -161,8 +167,8 @@ classdef GUI < handle
         function SubmitUR3(self)
             if self.ResumeFlag == true
                 moveto = transl(self.UR3Coordinates);
-                q = self.URobot3.model.ikine(moveto);
-                self.URobot3.model.animate(q);
+                q = self.UR3.model.ikine(moveto);
+                self.UR3.model.animate(q);
                 disp('UR3 Submit');
             else
                 disp('Press Resume to Reactivate Robot');
@@ -193,8 +199,6 @@ classdef GUI < handle
             else
                 disp('Press Resume to Reactivate Robot');
             end
-        
-
         end
 
         function updateTextBoxZU3(self,src,edit,i)
@@ -204,6 +208,12 @@ classdef GUI < handle
                 q(1,i) = deg2rad(newval);
                 self.ZU3.model.animate(q);
                 set(edit,'String',num2str(newval,3));
+                self.ZU3Arm{1}.model.base = self.ZU3.model.fkine(self.ZU3.model.getpos()).T*transl(0,0,-0.05)*troty(pi);
+                self.ZU3Arm{1}.model.animate([0]);
+                self.ZU3Arm{2}.model.base = self.ZU3Arm{1}.model.base.T*transl(0,0.015,-0.06)*troty(pi/2);
+                self.ZU3Arm{2}.model.animate(self.ZU3Arm{2}.model.getpos());
+                self.ZU3Arm{3}.model.base = self.ZU3Arm{1}.model.base.T*trotz(pi)*transl(0,0.015,-0.06)*troty(pi/2);
+                self.ZU3Arm{3}.model.animate(self.ZU3Arm{3}.model.getpos()); 
             end
         end
 
@@ -228,16 +238,28 @@ classdef GUI < handle
                 q = self.ZU3.model.getpos();
                 q(1,i) = deg2rad(str2double(newval));
                 self.ZU3.model.animate(q);
+                self.ZU3Arm{1}.model.base = self.ZU3.model.fkine(self.ZU3.model.getpos()).T*transl(0,0,-0.05)*troty(pi);
+                self.ZU3Arm{1}.model.animate([0]);
+                self.ZU3Arm{2}.model.base = self.ZU3Arm{1}.model.base.T*transl(0,0.015,-0.06)*troty(pi/2);
+                self.ZU3Arm{2}.model.animate(self.ZU3Arm{2}.model.getpos());
+                self.ZU3Arm{3}.model.base = self.ZU3Arm{1}.model.base.T*trotz(pi)*transl(0,0.015,-0.06)*troty(pi/2);
+                self.ZU3Arm{3}.model.animate(self.ZU3Arm{3}.model.getpos());
             end
         end
 
         function updateTextBoxUR3(self,src,edit,i)
             if self.ResumeFlag == true
                 newval = get(src,'Value');
-                q = self.URobot3.model.getpos();
+                q = self.UR3.model.getpos();
                 q(1,i) = deg2rad(newval);
-                self.URobot3.model.animate(q);
                 set(edit,'String',num2str(newval,3));
+                self.UR3.model.animate(q);
+                self.UR3Arm{1}.model.base = self.UR3.model.fkine(self.UR3.model.getpos()).T*transl(0,0,-0.05)*troty(pi);
+                self.UR3Arm{1}.model.animate([0]);
+                self.UR3Arm{2}.model.base = self.UR3Arm{1}.model.base.T*transl(0,0.015,-0.06)*troty(pi/2);
+                self.UR3Arm{2}.model.animate(self.UR3Arm{2}.model.getpos());
+                self.UR3Arm{3}.model.base = self.UR3Arm{1}.model.base.T*trotz(pi)*transl(0,0.015,-0.06)*troty(pi/2);
+                self.UR3Arm{3}.model.animate(self.UR3Arm{3}.model.getpos());         
             end
         end
 
@@ -256,9 +278,15 @@ classdef GUI < handle
                 end
             
                 set(slider,'Value',str2double(newval));
-                q = self.URobot3.model.getpos();
+                q = self.UR3.model.getpos();
                 q(1,i) = deg2rad(str2double(newval));
-                self.URobot3.model.animate(q);
+                self.UR3.model.animate(q);
+                self.UR3Arm{1}.model.base = self.UR3.model.fkine(self.UR3.model.getpos()).T*transl(0,0,-0.05)*troty(pi);
+                self.UR3Arm{1}.model.animate([0]);
+                self.UR3Arm{2}.model.base = self.UR3Arm{1}.model.base.T*transl(0,0.015,-0.06)*troty(pi/2);
+                self.UR3Arm{2}.model.animate(self.UR3Arm{2}.model.getpos());
+                self.UR3Arm{3}.model.base = self.UR3Arm{1}.model.base.T*trotz(pi)*transl(0,0.015,-0.06)*troty(pi/2);
+                self.UR3Arm{3}.model.animate(self.UR3Arm{3}.model.getpos());
             end
         end
 
