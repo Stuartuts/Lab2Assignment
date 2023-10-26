@@ -38,6 +38,8 @@ classdef JAKAZU3 < RobotBaseClass
             L(5) = Link('d',0.1175,'a',0,'alpha',-pi/2,'qlim',[deg2rad(-270) deg2rad(270)], 'offset',0);
             L(6) = Link('d',0.1050,'a',0,'alpha',0,'qlim',[deg2rad(-270) deg2rad(270)], 'offset', 0);
             self.model = SerialLink(L,'name', 'JAKAZU3');
+          
+           
         end
     end
 end
