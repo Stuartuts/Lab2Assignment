@@ -169,6 +169,12 @@ classdef GUI < handle
                 moveto = transl(self.UR3Coordinates);
                 q = self.UR3.model.ikine(moveto);
                 self.UR3.model.animate(q);
+                self.UR3Arm{1}.model.base = self.UR3.model.fkine(self.UR3.model.getpos()).T*transl(0,0,-0.05)*troty(pi);
+                self.UR3Arm{1}.model.animate([0]);
+                self.UR3Arm{2}.model.base = self.UR3Arm{1}.model.base.T*transl(0,0.015,-0.06)*troty(pi/2);
+                self.UR3Arm{2}.model.animate(self.UR3Arm{2}.model.getpos());
+                self.UR3Arm{3}.model.base = self.UR3Arm{1}.model.base.T*trotz(pi)*transl(0,0.015,-0.06)*troty(pi/2);
+                self.UR3Arm{3}.model.animate(self.UR3Arm{3}.model.getpos());    
                 disp('UR3 Submit');
             else
                 disp('Press Resume to Reactivate Robot');
@@ -195,6 +201,12 @@ classdef GUI < handle
                 moveto = transl(self.ZU3Coordinates);
                 q = self.ZU3.model.ikine(moveto);
                 self.ZU3.model.animate(q);
+                self.ZU3Arm{1}.model.base = self.ZU3.model.fkine(self.ZU3.model.getpos()).T*transl(0,0,-0.05)*troty(pi);
+                self.ZU3Arm{1}.model.animate([0]);
+                self.ZU3Arm{2}.model.base = self.ZU3Arm{1}.model.base.T*transl(0,0.015,-0.06)*troty(pi/2);
+                self.ZU3Arm{2}.model.animate(self.ZU3Arm{2}.model.getpos());
+                self.ZU3Arm{3}.model.base = self.ZU3Arm{1}.model.base.T*trotz(pi)*transl(0,0.015,-0.06)*troty(pi/2);
+                self.ZU3Arm{3}.model.animate(self.ZU3Arm{3}.model.getpos());
                 disp('ZU3 Submit');
             else
                 disp('Press Resume to Reactivate Robot');
