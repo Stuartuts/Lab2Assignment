@@ -38,7 +38,7 @@ classdef TestingGrab < handle
 
             self.MoveShaker;
         end
-
+targ
         function BarModels(self)
             % Define the BarModel function
             self.botshaker{1} = PlaceObject('BotShaker.ply');
@@ -74,7 +74,7 @@ classdef TestingGrab < handle
                 self.LeftHand{1}.model.animate(self.LeftHand{1}.model.getpos());
                 self.RightHand{1}.model.animate(self.RightHand{1}.model.getpos());
 
-                % self.botshaker_tr{1} = [self.botshaker_vert{1},ones(size(self.botshaker_vert{1},1),1)]*troty(pi/2)'*transl(-0.17,0,-0.16)'*self.GripperBase{1}.model.base.T';
+                self.botshaker_tr{1} = [self.botshaker_vert{1},ones(size(self.botshaker_vert{1},1),1)]*troty(pi/2)'*transl(-0.17,0,-0.16)'*self.GripperBase{1}.model.base.T';
 
                 % Update shaker position
                 set(self.botshaker{1}, 'Vertices', self.botshaker_tr{1}(:, 1:3));
