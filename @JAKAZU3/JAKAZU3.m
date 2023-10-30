@@ -1,6 +1,6 @@
 classdef JAKAZU3 < RobotBaseClass
     properties
-        plyFileNameStem = 'JAKAZU3';
+        plyFileNameStem = 'JakaZu3';
     end
 
     methods
