@@ -55,30 +55,55 @@ classdef Mission < handle
         end
 
         function MoveShaker(self)
-            % Move the shaker to the specified target position
-            end_pos = [0.5,0.5,0.1];
-            end_pos2 = [-0.2,0.4,0];
-            q_end = [];
-            q_end2 = [];
-            Q_Ini = rand()
-            for index = 1 : size(Q_Ini,1)
-                q_end = self.Arm{1}.model.ikine(transl(end_pos) * trotx(pi/2) * troty(pi) * trotz(pi/2),'q0',Q_Ini(index,:),'mask',[1 1 1 1 1 1],'ForceSln');
-                q_end2 = self.Arm{1}.model.ikine(transl(end_pos2) * trotx(pi/2) * troty(pi) * trotz(pi/2),'q0',Q_Ini(index,:),'mask',[1 1 1 1 1 1],'ForceSln');
-                if size(q_end2,1) && size(q_end,1)
-                    break
-                end
-            end
-            q_end
-            q_end2
+            end_pos = [0.5,0.5,0];
+            end_pos2 = [-0.2,0.4,0.2];
+            q_end = self.Arm{1}.model.ikcon(transl(end_pos) * trotx(pi/2) * troty(pi) * trotz(pi/2));
+            q_end2 = self.Arm{1}.model.ikcon(transl(end_pos2) * trotx(pi/2) * troty(pi) * trotz(pi/2));
             for i = 1:6
                 a = fix(q_end(i) / (pi));
-                if (a < -2 || a > 2)
+                if (a < -1 || a > 1)
                     q_end(i) = q_end(i) - a * 2 * pi;
                 end
             end
 
             qMatrix = jtraj(self.Arm{1}.model.getpos, q_end, 100);
             qMatrix = [qMatrix;jtraj(q_end,q_end2,100)];
+            % % % Move the shaker to the specified target position
+            % % end_pos = [0.6,0.6,0.1];
+            % % end_pos2 = [0,0.4,0.2];
+            % % q_end = [];
+            % % q_end2 = [];
+            % % q_ini = self.Arm{1}.model.ikcon(transl(end_pos) * trotx(pi/2) * troty(pi) * trotz(pi/2));
+            % % for i = 1:6
+            % %     a = fix(q_ini(i) / (pi));
+            % %     if (a < -1 || a > 1)
+            % %         q_ini(i) = q_ini(i) - a * 2 * pi;
+            % %     end
+            % % end
+            % % q_ini2 = self.Arm{1}.model.ikcon(transl(end_pos2) * trotx(pi/2) * troty(pi) * trotz(pi/2));
+            % % for i = 1:6
+            % %     a = fix(q_ini2(i) / (pi));
+            % %     if (a < -1 || a > 1)
+            % %         q_ini2(i) = q_ini2(i) - a * 2 * pi;
+            % %     end
+            % % end
+            % % 
+            % % q_end = self.Arm{1}.model.ikon(transl(end_pos) * trotx(pi/2) * troty(pi) * trotz(pi/2)
+            % % q_end2 = self.Arm{1}.model.ikon(transl(end_pos2) * trotx(pi/2) * troty(pi) * trotz(pi/2)
+            % % 
+            % %  % q_end = self.Arm{1}.model.ikine(transl(end_pos) * trotx(pi/2) * troty(pi) * trotz(pi/2),'q0',q_ini,'mask',[1 1 1 1 1 1],'ForceSln','ilimit',10000,'alpha',0.02)
+            % %  % q_end2 = self.Arm{1}.model.ikine(transl(end_pos2) * trotx(pi/2) * troty(pi) * trotz(pi/2),'q0',q_ini2,'mask',[1 1 1 1 1 1],'ForceSln','ilimit',10000)
+            % % 
+            % % 
+            % % for i = 1:6
+            % %     a = fix(q_end(i) / (pi));
+            % %     if (a < -1 || a > 1)
+            % %         q_end(i) = q_end(i) - a * 2 * pi;
+            % %     end
+            % % end
+            % % 
+            % % qMatrix = jtraj(self.Arm{1}.model.getpos, q_ini, 100);
+            % % qMatrix = [qMatrix;jtraj(q_ini,q_ini2,100)];
 
             for i = 1:200
                 % Update GripperBase, LeftHand, RightHand positions
