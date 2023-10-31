@@ -40,6 +40,7 @@ classdef Mission < handle
                 self.Soda = Soda;
                 self.UR3Arm = UR3Arm;
                 self.ZU3Arm = ZU3Arm;
+                
             end
             self.startMission(index,trajectoryindex,steps,EstopFlag)
         end
@@ -49,6 +50,7 @@ classdef Mission < handle
                 for i = trajectoryindex:steps %Grabbing Drinks (Suggestions on what part the robot should be doing in it)
                     
                     trajectoryindex = i
+                    disp(EstopFlag)
                     self.checkEstop(EstopFlag);
                     %Put code after, estop will stop before moving onto the
                     %next position. we dont want it moving after the estop

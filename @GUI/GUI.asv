@@ -342,8 +342,8 @@ classdef GUI < handle
         end
 
         function Mission(self,index,trajectoryindex,steps)
-            
-            if self.index == 1
+            index = self.index;
+            if index == 1
                 for i = trajectoryindex:steps %Grabbing Drinks (Suggestions on what part the robot should be doing in it)
                     
                     self.trajectoryindex = i
@@ -359,12 +359,12 @@ classdef GUI < handle
                 end
                 self.trajectoryindex = 1
                 self.index = self.index+1
-                
+                index = self.index;
                 trajectoryindex = self.trajectoryindex;
                 
             end
             
-            if self.index == 2 %Moving to pouring / if it does it in one trajectory moving and pouring
+            if index == 2 %Moving to pouring / if it does it in one trajectory moving and pouring
                 for i = trajectoryindex:steps
                     self.trajectoryindex = i
                     if self.EstopFlag == true
@@ -375,11 +375,11 @@ classdef GUI < handle
                 end
                 self.trajectoryindex = 1;
                 self.index = self.index+1;
-                
+                index = self.index;
                 trajectoryindex = self.trajectoryindex;
             end
 
-            if self.index == 3 %moving drinks back
+            if index == 3 %moving drinks back
                 for i = trajectoryindex:steps
                     self.trajectoryindex = i
                     if self.EstopFlag == true
@@ -390,11 +390,11 @@ classdef GUI < handle
                 end
                 self.trajectoryindex = 1;
                 self.index = self.index+1;
-                
+                index = self.index;
                 trajectoryindex = self.trajectoryindex;
             end
 
-            if self.index == 4 %Grabbing Glasses and putting on shaker lid?
+            if index == 4 %Grabbing Glasses and putting on shaker lid?
                 for i = trajectoryindex:steps
                     self.trajectoryindex = i
                     if self.EstopFlag == true
@@ -405,11 +405,11 @@ classdef GUI < handle
                 end
                 self.trajectoryindex = 1;
                 self.index = self.index+1;
-                
+                index = self.index;
                 trajectoryindex = self.trajectoryindex;
             end
 
-            if self.index == 5 %Shaking Drink
+            if index == 5 %Shaking Drink
                 for i = trajectoryindex:steps
                     self.trajectoryindex = i
                     if self.EstopFlag == true
@@ -420,11 +420,11 @@ classdef GUI < handle
                 end
                 self.trajectoryindex = 1;
                 self.index = self.index+1;
-                
+                index = self.index;
                 trajectoryindex = self.trajectoryindex;
             end
 
-            if self.index == 6 %Move to glass and pour
+            if index == 6 %Move to glass and pour
                 for i = trajectoryindex:steps
                     self.trajectoryindex = i
                     if self.EstopFlag == true
@@ -435,7 +435,7 @@ classdef GUI < handle
                 end
                 self.trajectoryindex = 1;
                 self.index = self.index+1;
-                
+                index = self.index;
                 trajectoryindex = self.trajectoryindex;
             end
 
@@ -450,7 +450,7 @@ classdef GUI < handle
                 end
                 self.trajectoryindex = 1;
                 self.index = self.index+1;
-                
+                index = self.index;
                 trajectoryindex = self.trajectoryindex;
             end
 
@@ -465,7 +465,7 @@ classdef GUI < handle
                 end
                 self.trajectoryindex = 1;
                 self.index = 1;
-                
+                index = self.index;
                 trajectoryindex = self.trajectoryindex;
             end
             disp('Mission Complete');
