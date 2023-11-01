@@ -6,7 +6,8 @@ classdef TestingGrab < handle
         botshaker, botshaker_vert, botshaker_tr
         BarModel
         objPos
-        initialShakerPos;targetShakerPos;
+        initialShakerPos
+        targetShakerPos
         action
     end
 
@@ -17,25 +18,34 @@ classdef TestingGrab < handle
             axis([-1 1 -1 1 0 1]);
             hold on;
 
-            self.Arm{1} = UR3; % Replace with your robot model
-            % Define the GripperBase, LeftHand, and RightHand
-            Base1 = self.Arm{1}.model.fkine(self.Arm{1}.model.getpos).T*transl(0,0,-0.01)*troty(pi);
+            % Define UR3 and JAKAzu3 arms
+            self.Arm{1} = UR3; % Replace with your UR3 robot model
+            self.Arm{2} = JAKAzu3; % Replace with your JAKAzu3 robot model
+
+            % Define the GripperBase, LeftHand, and RightHand for UR3
+            Base1 = self.Arm{1}.model.fkine(self.Arm{1}.model.getpos).T * transl(0, 0, -0.01) * troty(pi);
             self.GripperBase{1} = GripperBase(Base1);
-            self.LeftHand{1} = GripperHand(self.GripperBase{1}.model.base.T*transl(0,0.015,-0.06)*troty(pi/2));
-            self.RightHand{1} = GripperHand(self.GripperBase{1}.model.base.T*trotz(pi)*transl(0,0.015,-0.06)*troty(pi/2));
+            self.LeftHand{1} = GripperHand(self.GripperBase{1}.model.base.T * transl(0, 0.015, -0.06) * troty(pi/2));
+            self.RightHand{1} = GripperHand(self.GripperBase{1}.model.base.T * trotz(pi) * transl(0, 0.015, -0.06) * troty(pi/2));
+
+            % Define the GripperBase, LeftHand, and RightHand for JAKAzu3
+            Base2 = self.Arm{2}.model.fkine(self.Arm{2}.model.getpos).T * transl(0, 0, -0.01) * troty(pi);
+            self.GripperBase{2} = GripperBase(Base2);
+            self.LeftHand{2} = GripperHand(self.GripperBase{2}.model.base.T * transl(0, 0.015, -0.06) * troty(pi/2));
+            self.RightHand{2} = GripperHand(self.GripperBase{2}.model.base.T * trotz(pi) * transl(0, 0.015, -0.06) * troty(pi/2));
 
             self.initialShakerPos{1} = [-0.2, 0.55, 0];
             self.initialShakerPos{2} = [0, 0.55, 0.18];
             self.targetShakerPos = [-0.2, 0, 0.2];
             self.BarModels;
-            self.action=1;
+            self.action = 1;
             self.GripperControl; % Open gripper
 
             % Define the initial shaker position
-
             self.MoveShaker;
 
         end
+
         function BarModels(self)
             % Define the BarModel function
             self.botshaker{1} = PlaceObject('BotShaker.ply');
@@ -139,3 +149,4 @@ classdef TestingGrab < handle
         end
     end
 end
+    
