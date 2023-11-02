@@ -271,7 +271,7 @@ classdef MinhMission < handle
         end
         function RunGUI(self)
             self.fig = uifigure('Name','PhysicalStop','position',[80 250 200 200],'KeyPressFcn',@keyboard);
-            uicontrol(self.fig,'style','togglebutton','position',[80 250 150 150],'callback',@stop,'string','Stop','BackgroundColor',[1 0 0]);
+            uicontrol(self.fig,'style','togglebutton','position',[80  158 91],'callback',@stop,'string','Stop','BackgroundColor',[1 0 0]);
             function keyboard(~,event)
                 switch event.Key
                     case 's'
