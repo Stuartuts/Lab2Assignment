@@ -8,7 +8,7 @@ classdef Mission < handle
         objPos
         initialShakerPos;targetShakerPos;
         action
-        stopsignal %e-stop -> turn into 1 -> stop run
+        stopsignal
 
     end
 
@@ -125,9 +125,6 @@ classdef Mission < handle
 
 
             for i = 1:size(qMatrix,1)
-                if self.stopsignal 
-                    break 
-                end
                 % Update GripperBase, LeftHand, RightHand positions
                 Base1 = self.Arm{1}.model.fkine(self.Arm{1}.model.getpos).T*transl(0,0,-0.01)*troty(pi);
                 self.GripperBase{1}.model.base = Base1;
@@ -182,9 +179,6 @@ classdef Mission < handle
                 qMatrix2 = [qMatrix2;jtraj(q_end2{in-1}, q_end2{in}, 100)];
             end
             for i = 1:size(qMatrix2,1)
-                 if self.stopsignal 
-                    break 
-                end
                 % Update GripperBase, LeftHand, RightHand positions
                 Base2 = self.Arm{2}.model.fkine(self.Arm{2}.model.getpos).T*transl(0,0,-0.01)*troty(pi);
                 self.GripperBase{2}.model.base = Base2;
