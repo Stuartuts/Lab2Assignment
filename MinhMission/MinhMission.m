@@ -225,11 +225,11 @@ classdef MinhMission < handle
                 drawnow;
             end
 
-            %% Collision Detection
-            % This process will take Joints Stages Matrix from the source and
-            % check the collision with the surrounding environment including
-            % the robot itself. Then output the result of the checking
-            % (True-False)
+        %     %% Collision Detection
+        %     % This process will take Joints Stages Matrix from the source and
+        %     % check the collision with the surrounding environment including
+        %     % the robot itself. Then output the result of the checking
+        %     % (True-False)
 
             function result = CheckCollision(self)
                 result = 0;
@@ -268,9 +268,9 @@ classdef MinhMission < handle
                     end
                 end
             end
-        end
+         end
         function RunGUI(self)
-            self.fig = uifigure('Name','PhysicalStop','position',[80 250 200 200],'KeyPressFcn',@keyboard);
+            self.fig = uifigure('Name','PhysicalStop','position',[80 250 150 150],'KeyPressFcn',@keyboard);
             uicontrol(self.fig,'style','togglebutton','position',[80 250 150 150],'callback',@stop,'string','Stop','BackgroundColor',[1 0 0]);
             function keyboard(~,event)
                 switch event.Key
