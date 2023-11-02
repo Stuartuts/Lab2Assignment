@@ -40,7 +40,6 @@ classdef Mission < handle
                 self.Soda = Soda;
                 self.UR3Arm = UR3Arm;
                 self.ZU3Arm = ZU3Arm;
-                
             end
             self.startMission(index,trajectoryindex,steps,EstopFlag)
         end

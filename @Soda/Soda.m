@@ -10,7 +10,7 @@ classdef Soda < RobotBaseClass
                 self.CreateModel()
                 
                 self.model.base = self.model.base.T * baseTr ;
-                self.PlotAndColourRobot(); %Model From FreeCad https://sketchfab.com/3d-models/absolut-vodka-1l-bottle-e11913a2fcdb41d5badfa841d6448c90
+                self.PlotAndColourRobot(); %Model From FreeCad https://sketchfab.com/3d-models/plastic-water-bottle-fdc859edc8274342ba00a47f84c148d9
             end
 
             function CreateModel(self)
