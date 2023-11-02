@@ -194,6 +194,7 @@ classdef GUI < handle
 
         function StartMission(self)
             disp('Mission Start');
+            MinhMission();
             if self.EstopFlag == false 
                 self.Mission(self.index,self.trajectoryindex,self.steps)
                 self.startmissionflag = true;
@@ -341,135 +342,135 @@ classdef GUI < handle
             end
         end
 
-        function Mission(self,index,trajectoryindex,steps)
-            
-            if self.index == 1
-                for i = trajectoryindex:steps %Grabbing Drinks (Suggestions on what part the robot should be doing in it)
-                    
-                    self.trajectoryindex = i
-                    disp(self.EstopFlag)
-                    if self.EstopFlag == true
-                        disp('Estop Pressed')
-                        return
-                    end
-                    %Put code after, estop will stop before moving onto the
-                    %next position. we dont want it moving after the estop
-                    %is pressed
-                    pause(0.5);
-                end
-                self.trajectoryindex = 1
-                self.index = self.index+1
-                
-                trajectoryindex = self.trajectoryindex;
-                
-            end
-            
-            if self.index == 2 %Moving to pouring / if it does it in one trajectory moving and pouring
-                for i = trajectoryindex:steps
-                    self.trajectoryindex = i
-                    if self.EstopFlag == true
-                        disp('Estop Pressed')
-                        return
-                    end
-                    pause(0.5);
-                end
-                self.trajectoryindex = 1;
-                self.index = self.index+1;
-                
-                trajectoryindex = self.trajectoryindex;
-            end
-
-            if self.index == 3 %moving drinks back
-                for i = trajectoryindex:steps
-                    self.trajectoryindex = i
-                    if self.EstopFlag == true
-                        disp('Estop Pressed')
-                        return
-                    end
-                    pause(0.5);
-                end
-                self.trajectoryindex = 1;
-                self.index = self.index+1;
-                
-                trajectoryindex = self.trajectoryindex;
-            end
-
-            if self.index == 4 %Grabbing Glasses and putting on shaker lid?
-                for i = trajectoryindex:steps
-                    self.trajectoryindex = i
-                    if self.EstopFlag == true
-                        disp('Estop Pressed')
-                        return
-                    end
-                    pause(0.5);
-                end
-                self.trajectoryindex = 1;
-                self.index = self.index+1;
-                
-                trajectoryindex = self.trajectoryindex;
-            end
-
-            if self.index == 5 %Shaking Drink
-                for i = trajectoryindex:steps
-                    self.trajectoryindex = i
-                    if self.EstopFlag == true
-                        disp('Estop Pressed')
-                        return
-                    end
-                    pause(0.5);
-                end
-                self.trajectoryindex = 1;
-                self.index = self.index+1;
-                
-                trajectoryindex = self.trajectoryindex;
-            end
-
-            if self.index == 6 %Move to glass and pour
-                for i = trajectoryindex:steps
-                    self.trajectoryindex = i
-                    if self.EstopFlag == true
-                        disp('Estop Pressed')
-                        return
-                    end
-                    pause(0.5);
-                end
-                self.trajectoryindex = 1;
-                self.index = self.index+1;
-                
-                trajectoryindex = self.trajectoryindex;
-            end
-
-            if self.index == 7 %Serve drink, put shaker away/Maybe clean?
-                for i = trajectoryindex:steps
-                    self.trajectoryindex = i
-                    if self.EstopFlag == true
-                        disp('Estop Pressed')
-                        return
-                    end
-                    pause(0.5);
-                end
-                self.trajectoryindex = 1;
-                self.index = self.index+1;
-                
-                trajectoryindex = self.trajectoryindex;
-            end
-
-            if self.index == 8 % Return to original position
-                for i = trajectoryindex:steps
-                    self.trajectoryindex = i
-                    if self.EstopFlag == true
-                        disp('Estop Pressed')
-                        return
-                    end
-                    pause(0.5);
-                end
-                self.trajectoryindex = 1;
-                self.index = 1;
-                
-                trajectoryindex = self.trajectoryindex;
-            end
-            disp('Mission Complete');
-        end
+        % function Mission(self,index,trajectoryindex,steps)
+        % 
+        %     if self.index == 1
+        %         for i = trajectoryindex:steps %Grabbing Drinks (Suggestions on what part the robot should be doing in it)
+        % 
+        %             self.trajectoryindex = i
+        %             disp(self.EstopFlag)
+        %             if self.EstopFlag == true
+        %                 disp('Estop Pressed')
+        %                 return
+        %             end
+        %             %Put code after, estop will stop before moving onto the
+        %             %next position. we dont want it moving after the estop
+        %             %is pressed
+        %             pause(0.5);
+        %         end
+        %         self.trajectoryindex = 1
+        %         self.index = self.index+1
+        % 
+        %         trajectoryindex = self.trajectoryindex;
+        % 
+        %     end
+        % 
+        %     if self.index == 2 %Moving to pouring / if it does it in one trajectory moving and pouring
+        %         for i = trajectoryindex:steps
+        %             self.trajectoryindex = i
+        %             if self.EstopFlag == true
+        %                 disp('Estop Pressed')
+        %                 return
+        %             end
+        %             pause(0.5);
+        %         end
+        %         self.trajectoryindex = 1;
+        %         self.index = self.index+1;
+        % 
+        %         trajectoryindex = self.trajectoryindex;
+        %     end
+        % 
+        %     if self.index == 3 %moving drinks back
+        %         for i = trajectoryindex:steps
+        %             self.trajectoryindex = i
+        %             if self.EstopFlag == true
+        %                 disp('Estop Pressed')
+        %                 return
+        %             end
+        %             pause(0.5);
+        %         end
+        %         self.trajectoryindex = 1;
+        %         self.index = self.index+1;
+        % 
+        %         trajectoryindex = self.trajectoryindex;
+        %     end
+        % 
+        %     if self.index == 4 %Grabbing Glasses and putting on shaker lid?
+        %         for i = trajectoryindex:steps
+        %             self.trajectoryindex = i
+        %             if self.EstopFlag == true
+        %                 disp('Estop Pressed')
+        %                 return
+        %             end
+        %             pause(0.5);
+        %         end
+        %         self.trajectoryindex = 1;
+        %         self.index = self.index+1;
+        % 
+        %         trajectoryindex = self.trajectoryindex;
+        %     end
+        % 
+        %     if self.index == 5 %Shaking Drink
+        %         for i = trajectoryindex:steps
+        %             self.trajectoryindex = i
+        %             if self.EstopFlag == true
+        %                 disp('Estop Pressed')
+        %                 return
+        %             end
+        %             pause(0.5);
+        %         end
+        %         self.trajectoryindex = 1;
+        %         self.index = self.index+1;
+        % 
+        %         trajectoryindex = self.trajectoryindex;
+        %     end
+        % 
+        %     if self.index == 6 %Move to glass and pour
+        %         for i = trajectoryindex:steps
+        %             self.trajectoryindex = i
+        %             if self.EstopFlag == true
+        %                 disp('Estop Pressed')
+        %                 return
+        %             end
+        %             pause(0.5);
+        %         end
+        %         self.trajectoryindex = 1;
+        %         self.index = self.index+1;
+        % 
+        %         trajectoryindex = self.trajectoryindex;
+        %     end
+        % 
+        %     if self.index == 7 %Serve drink, put shaker away/Maybe clean?
+        %         for i = trajectoryindex:steps
+        %             self.trajectoryindex = i
+        %             if self.EstopFlag == true
+        %                 disp('Estop Pressed')
+        %                 return
+        %             end
+        %             pause(0.5);
+        %         end
+        %         self.trajectoryindex = 1;
+        %         self.index = self.index+1;
+        % 
+        %         trajectoryindex = self.trajectoryindex;
+        %     end
+        % 
+        %     if self.index == 8 % Return to original position
+        %         for i = trajectoryindex:steps
+        %             self.trajectoryindex = i
+        %             if self.EstopFlag == true
+        %                 disp('Estop Pressed')
+        %                 return
+        %             end
+        %             pause(0.5);
+        %         end
+        %         self.trajectoryindex = 1;
+        %         self.index = 1;
+        % 
+        %         trajectoryindex = self.trajectoryindex;
+        %     end
+        %     disp('Mission Complete');
+        % end
     end
 
 end

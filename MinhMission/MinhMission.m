@@ -1,4 +1,4 @@
-classdef Mission < handle
+classdef MinhMission < handle
     properties (Access = public)
         GripperBase, LeftHand, RightHand
         Arm
@@ -8,15 +8,16 @@ classdef Mission < handle
         objPos
         initialShakerPos;targetShakerPos;
         action
+        CheckCollision
         stopsignal %e-stop -> turn into 1 -> stop run
 
     end
 
     methods (Access = public)
-        function self = Mission()
+        function self = MinhMission()
             close all;
             warning off;
-            axis([-6 4 -4 3 -3 3]);
+            axis([-6 4 -4 3 -0.5 3]);
             hold on;
 
             self.Arm{1} = UR3; % Replace with your robot model
@@ -26,16 +27,13 @@ classdef Mission < handle
             self.LeftHand{1} = GripperHand(self.GripperBase{1}.model.base.T*transl(0,0.015,-0.06)*troty(pi/2));
             self.RightHand{1} = GripperHand(self.GripperBase{1}.model.base.T*trotz(pi)*transl(0,0.015,-0.06)*troty(pi/2));
 
-            self.Arm{2} = JAKAZU3(transl(-0.7,0,0)); % Replace with your robot model
+            self.Arm{2} = JAKAZU3(transl(-0.7,0,0)*trotz(-pi/2)); % Replace with your robot model
 
             % Define the GripperBase, LeftHand, and RightHand for Arm2
             Base2 = self.Arm{2}.model.fkine(self.Arm{2}.model.getpos).T*transl(0,0,-0.01)*troty(pi);
             self.GripperBase{2} = GripperBase(Base2);
             self.LeftHand{2} = GripperHand(self.GripperBase{2}.model.base.T*transl(0,0.015,-0.06)*troty(pi/2));
             self.RightHand{2} = GripperHand(self.GripperBase{2}.model.base.T*trotz(pi)*transl(0,0.015,-0.06)*troty(pi/2));
-
-
-
             self.initialShakerPos{1} = [-0.2, 0.55, 0];
             self.initialShakerPos{2} = [0, 0.55, 0.18];
             self.targetShakerPos = [-0.2, 0, 0.2];
@@ -43,8 +41,9 @@ classdef Mission < handle
             self.action=1;
             self.GripperControl; % Open gripper
 
+            self.RunGUI
+          
             % Define the initial shaker position
-
             self.MoveShaker;
 
         end
@@ -106,7 +105,7 @@ classdef Mission < handle
             q_end{1} = self.Arm{1}.model.getpos;
 
             for t=2:(size(end_pos1,2)+1)
-                q_end{t} = self.Arm{1}.model.ikunc(transl(end_pos1{t-1}) * trotx(pi/2) * troty(pi) * trotz(pi/2),q_end{t-1})
+                q_end{t} = self.Arm{1}.model.ikunc(transl(end_pos1{t-1}) * trotx(pi/2) * troty(pi) * trotz(pi/2),q_end{t-1});
             end
             for ind = 2:size(q_end,2)
                 for i = 1:6
@@ -125,8 +124,8 @@ classdef Mission < handle
 
 
             for i = 1:size(qMatrix,1)
-                if self.stopsignal 
-                    break 
+                if self.stopsignal
+                    break
                 end
                 % Update GripperBase, LeftHand, RightHand positions
                 Base1 = self.Arm{1}.model.fkine(self.Arm{1}.model.getpos).T*transl(0,0,-0.01)*troty(pi);
@@ -182,8 +181,8 @@ classdef Mission < handle
                 qMatrix2 = [qMatrix2;jtraj(q_end2{in-1}, q_end2{in}, 100)];
             end
             for i = 1:size(qMatrix2,1)
-                 if self.stopsignal 
-                    break 
+                if self.stopsignal
+                    break
                 end
                 % Update GripperBase, LeftHand, RightHand positions
                 Base2 = self.Arm{2}.model.fkine(self.Arm{2}.model.getpos).T*transl(0,0,-0.01)*troty(pi);
@@ -263,13 +262,22 @@ classdef Mission < handle
 
                         current_transform = transforms(:,:, i);
 
-                        current_transform = current_transform * trotz(q(1,i) + L.offset) * ...
-                            transl(0,0, L.d) * transl(L.a,0,0) * trotx(L.alpha);
+                        current_transform = current_transform * trotz(q(1,i) + L.offset) *transl(0,0, L.d) * transl(L.a,0,0) * trotx(L.alpha);
                         transforms(:,:,i + 1) = current_transform;
                     end
                 end
             end
         end
+        function RunGUI(self)
+            fig = uifigure('Name','PhysicalStop','position',[80 250 524 472],'KeyPressFcn',@keyboard);
+            function keyboard(~,event)
+                switch event.Key
+                    case 's'
+                        self.stopsignal = 1;
+                end
+            end
+        end
+
     end
 end
 
