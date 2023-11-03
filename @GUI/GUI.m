@@ -212,7 +212,7 @@ classdef GUI < handle %GUI Interface and most matlab classes By stuart, all func
         function SubmitUR3(self)
             if self.ResumeFlag == true
                 moveto = transl(self.UR3Coordinates);
-                q = self.URobot3.model.ikine(moveto);
+                q = self.URobot3.model.ikcon(moveto);
                 self.URobot3.model.animate(q);
                 self.UR3Arm{1}.model.base = self.URobot3.model.fkine(self.URobot3.model.getpos()).T*transl(0,0,-0.05)*troty(pi);
                 self.UR3Arm{1}.model.animate([0]);
@@ -258,7 +258,7 @@ classdef GUI < handle %GUI Interface and most matlab classes By stuart, all func
         function SubmitZU3(self)
             if self.ResumeFlag == true
                 moveto = transl(self.ZU3Coordinates);
-                q = self.ZU3.model.ikine(moveto);
+                q = self.ZU3.model.ikcon(moveto);
                 self.ZU3.model.animate(q);
                 self.ZU3Arm{1}.model.base = self.ZU3.model.fkine(self.ZU3.model.getpos()).T*transl(0,0,-0.05)*troty(pi);
                 self.ZU3Arm{1}.model.animate([0]);
