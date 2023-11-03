@@ -131,7 +131,7 @@ classdef GUI < handle %GUI Interface and most matlab classes By stuart, all func
             PlaceObject('Bar.ply',[0 0 0.1]); %From Grabcad https://grabcad.com/library/pub-bar-lucius-1
             PlaceObject('Holder.ply',[0 1.0 0.0]); %Created in solidworks
             PlaceObject('LightCurtain.PLY',[0 -0.35 1.0]) %Created in solidworks
-            PlaceObject('FireExtinguisher.PLY',[0.5, 0.5, 0.0]);
+            PlaceObject('FireExtinguisher.PLY',[2.0, 0.5, 0.0]);
             PlaceObject('EmergencyButton.ply',[1.75 0 1.0]);
             Alarm = PlaceObject('AlarmHorn.ply',[-1,1.1,2]);
             self.ZU3 = JAKAZU3(transl(0.4,0.3,1.0));
@@ -152,7 +152,7 @@ classdef GUI < handle %GUI Interface and most matlab classes By stuart, all func
             self.ZU3Arm{2} = GripperHand(self.ZU3Arm{1}.model.base.T*transl(0,0.015,-0.06)*troty(pi/2));
             self.ZU3Arm{3} = GripperHand(self.ZU3Arm{1}.model.base.T*trotz(pi)*transl(0,0.015,-0.06)*troty(pi/2));
             self.Shaker{1} = Shaker(transl([0 0 1.05]));
-            self.Shaker{2} = Shaker(transl([-0.2 0 1.24])*trotx(180,'deg'))
+            self.Shaker{2} = Shaker(transl([-0.2 0 1.24])*trotx(180,'deg'));
             self.hand = Hand(transl([1.5 -0.375 1.7]));%transl([1.5 -0.375 1.5])*trotx(90,'deg')*trotz(90,'deg')
             
         end
@@ -761,7 +761,7 @@ classdef GUI < handle %GUI Interface and most matlab classes By stuart, all func
                 desiredlocation(3,2) = 0.0175;
                 desiredlocation(3,3) = 0;
                 answer = desiredlocation
-                self.UR3Trajectory = jtraj(self.URobot3.model.getpos(),self.URobot3.model.ikunc(desiredlocation),self.steps);
+                self.UR3Trajectory = jtraj(self.URobot3.model.getpos(),self.URobot3.model.ikunc(desiredlocation,self.URobot3.model.getpos()),self.steps);
                 for i = self.trajectoryindex:self.steps
                     if self.EstopFlag == true 
                         self.trajectoryindex = i;
@@ -1011,6 +1011,12 @@ classdef GUI < handle %GUI Interface and most matlab classes By stuart, all func
                     pause(0.01);
                 end
             end
+
+            self.index = 1;
+            self.check = 0;
+            self.UR3Trajectory = zeros(50,6);
+            self.ZU3Trajectory = zeros(50,6);
+           
 
 
 
